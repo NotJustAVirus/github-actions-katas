@@ -1,0 +1,25 @@
+name: Reusable Workflows
+on:
+  workflow_call:
+    inputs:
+      who-to-greet:
+        description: Who should be greeted?
+        type: string
+        required: true
+        default: "World"
+    outputs:
+      current-time:
+        description: The time when greeting occurred
+        value: ${{ jobs.greet.outputs.current-time }}
+    
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greet
+        run: echo "Hello, ${{ inputs.who-to-greet }}!"
+      - name: Set time
+        id: time
+        run: echo "time=$(date)" >> $GITHUB_OUTPUT
+    outputs:
+      current-time: ${{ steps.time.outputs.time }}
